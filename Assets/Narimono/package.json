@@ -1,0 +1,12 @@
+{
+  "name": "com.sorane.narimono",
+  "displayName": "Narimono",
+  "author": { "name": "Sorane" },
+  "version": "1.0.0",
+  "unity": "6000.0",
+  "description": "Unity向けの、同時再生数の制御・3Dサウンド・フェードに対応したサウンド再生ライブラリ",
+  "keywords": [ "Audio", "Sound", "Sfx", "Bgm", "Unity" ],
+  "license": "MIT",
+  "category": "Audio",
+  "dependencies": {}
+}
