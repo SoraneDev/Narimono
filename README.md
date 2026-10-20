@@ -38,7 +38,7 @@ Unity 向けの軽量なサウンド再生ライブラリです。
 `Window > Package Manager` の `+` ボタンから `Install package from git URL...` を選び、次の URL を入力します。
 
 ```
-https://github.com/YOUR_ACCOUNT/Narimono.git
+https://github.com/SoraneDev/Narimono.git?path=/Assets/Narimono
 ```
 
 ### 手動
