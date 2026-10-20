@@ -10,6 +10,7 @@ namespace Narimono
     /// 表示するのはEditorとDevelopment Buildのみ。画面左上のボタンでパネルを開閉する。
     /// それ以外のビルドでは自動的に無効化するため、シーンに付けたままでも描画の負荷はかからない。
     /// </remarks>
+    [AddComponentMenu("Narimono/AudioStatsOverlay")]
     public sealed class AudioStatsOverlay : MonoBehaviour
     {
         [SerializeField] private AudioSystem _audioSystem;

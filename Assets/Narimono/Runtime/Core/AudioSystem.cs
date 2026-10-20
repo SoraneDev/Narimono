@@ -11,6 +11,7 @@ namespace Narimono
     /// 他のコンポーネントのAwakeからPlayが呼ばれてもボイスが生成済みであるように、<see cref="DefaultExecutionOrder"/>で先に初期化する。
     /// </remarks>
     [DefaultExecutionOrder(-100)]
+    [AddComponentMenu("Narimono/AudioSystem")]
     public sealed class AudioSystem : MonoBehaviour, IAudioSystem
     {
         [SerializeField, Min(1)] private int _maxVoiceCount = 32;
