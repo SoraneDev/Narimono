@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Narimono
 {
     /// <summary>
-    /// <see cref="AudioStats"/>の計測結果を画面上に表示するデバッグ用のコンポーネント
+    /// <see cref="AudioStats" />の計測結果を、デバッグ用に画面上へ表示する。
     /// </summary>
     /// <remarks>
     /// 表示するのはEditorとDevelopment Buildのみ。画面左上のボタンでパネルを開閉する。
@@ -16,15 +16,14 @@ namespace Narimono
         [SerializeField] private AudioSystem _audioSystem;
 
 
-        // 表示する文章を作り直す間隔（秒）
+        // 表示する文章を作り直す間隔（秒）。
         private const float RefreshInterval = 0.5f;
-
-        // 画面の端や、ボタンとパネルの間に空ける余白
+        // 画面の端や、ボタンとパネルの間に空ける余白。
         private const float Margin = 10f;
 
 
-        private static readonly Vector2 ToggleButtonSize = new(140f, 28f);
-        private static readonly Vector2 PanelMaxSize = new(900f, 480f);
+        private static readonly Vector2 s_toggleButtonSize = new(140f, 28f);
+        private static readonly Vector2 s_panelMaxSize = new(900f, 480f);
 
 
         private string _report = string.Empty;
@@ -51,7 +50,10 @@ namespace Narimono
 
         private void OnGUI()
         {
-            if (_audioSystem == null || _audioSystem.Stats == null) return;
+            if (_audioSystem == null || _audioSystem.Stats == null)
+            {
+                return;
+            }
 
             // IMGUIは同じフレームの中でLayout、入力、Repaintの順にイベントが呼ばれ、
             // GUILayoutの構成がLayoutとRepaintで食い違うとエラーになる。
@@ -61,43 +63,48 @@ namespace Narimono
                 _isPanelVisible = _isOpen;
 
                 // 閉じている間は文章を作り直さない。
-                if (_isPanelVisible) RefreshReport();
+                if (_isPanelVisible)
+                {
+                    RefreshReport();
+                }
             }
 
-            var toggleButtonRect = new Rect(Margin, Margin, ToggleButtonSize.x, ToggleButtonSize.y);
+            var toggleButtonRect = new Rect(Margin, Margin, s_toggleButtonSize.x, s_toggleButtonSize.y);
 
             if (GUI.Button(toggleButtonRect, _isOpen ? "Audio Stats  [-]" : "Audio Stats  [+]"))
             {
                 _isOpen = !_isOpen;
             }
 
-            if (_isPanelVisible) DrawPanel();
+            if (_isPanelVisible)
+            {
+                DrawPanel();
+            }
         }
 
 
-        /// <summary>
-        /// 表示する文章を一定間隔で作り直す。
-        /// </summary>
+        // 表示する文章を一定間隔で作り直す。
         private void RefreshReport()
         {
-            if (Time.unscaledTime < _nextRefreshTime) return;
+            if (Time.unscaledTime < _nextRefreshTime)
+            {
+                return;
+            }
 
             _report = _audioSystem.Stats.BuildReport();
             _nextRefreshTime = Time.unscaledTime + RefreshInterval;
         }
 
 
-        /// <summary>
-        /// 操作ボタンと計測結果のパネルを描画する。
-        /// </summary>
+        // 操作ボタンと計測結果のパネルを描画する。
         private void DrawPanel()
         {
-            float panelTop = Margin * 2f + ToggleButtonSize.y;
+            float panelTop = (Margin * 2f) + s_toggleButtonSize.y;
             var panelRect = new Rect(
                 Margin,
                 panelTop,
-                Mathf.Min(PanelMaxSize.x, Screen.width - Margin * 2f),
-                Mathf.Min(PanelMaxSize.y, Screen.height - panelTop - Margin));
+                Mathf.Min(s_panelMaxSize.x, Screen.width - (Margin * 2f)),
+                Mathf.Min(s_panelMaxSize.y, Screen.height - panelTop - Margin));
 
             GUI.Box(panelRect, GUIContent.none);
             GUILayout.BeginArea(panelRect);
@@ -111,7 +118,10 @@ namespace Narimono
             }
 
             // 表示中の文章は最大で更新間隔の分だけ古いため、ログには最新の計測結果を出す。
-            if (GUILayout.Button("Log")) Debug.Log(_audioSystem.Stats.BuildReport());
+            if (GUILayout.Button("Log"))
+            {
+                Debug.Log(_audioSystem.Stats.BuildReport());
+            }
 
             GUILayout.EndHorizontal();
 

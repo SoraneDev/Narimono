@@ -4,17 +4,17 @@ using UnityEngine;
 namespace Narimono
 {
     /// <summary>
-    /// 音の再生、停止などの機能を提供するためのインターフェース
+    /// 音の再生、停止などの機能を提供する。
     /// </summary>
     public interface IAudioSystem
     {
         /// <summary>
         /// 2D音源を再生する。
         /// </summary>
-        /// <param name="cue">再生する音源</param>
+        /// <param name="cue">再生する音源。</param>
         /// <returns>
         /// 停止・一時停止に使うハンドル。
-        /// 再生間隔の制限や同時再生数の上限などで再生しなかった場合は<see cref="AudioPlayback.None"/>を返す。
+        /// 再生間隔の制限や同時再生数の上限などで再生しなかった場合は<see cref="AudioPlayback.None" />を返す。
         /// </returns>
         AudioPlayback Play(AudioCue cue);
 
@@ -22,12 +22,12 @@ namespace Narimono
         /// <summary>
         /// 3D音源を再生する。
         /// </summary>
-        /// <param name="cue">再生する音源</param>
-        /// <param name="position">音を鳴らすワールド座標</param>
+        /// <param name="cue">再生する音源。</param>
+        /// <param name="position">音を鳴らすワールド座標。</param>
         /// <returns>
         /// 停止・一時停止に使うハンドル。
         /// リスナーから聞こえない距離にある場合や、再生間隔の制限、同時再生数の上限などで再生しなかった場合は
-        /// <see cref="AudioPlayback.None"/>を返す。
+        /// <see cref="AudioPlayback.None" />を返す。
         /// </returns>
         AudioPlayback Play(SpatialAudioCue cue, Vector3 position);
 
@@ -35,20 +35,20 @@ namespace Narimono
         /// <summary>
         /// 指定したTransformに追従させて3D音源を再生する。追従対象が破棄されると、音はフェードアウトして終了する。
         /// </summary>
-        /// <param name="cue">再生する音源</param>
-        /// <param name="followTarget">音を追従させるTransform</param>
+        /// <param name="cue">再生する音源。</param>
+        /// <param name="followTarget">音を追従させるTransform。</param>
         /// <returns>
         /// 停止・一時停止に使うハンドル。
         /// リスナーから聞こえない距離にある場合や、再生間隔の制限、同時再生数の上限などで再生しなかった場合は
-        /// <see cref="AudioPlayback.None"/>を返す。
+        /// <see cref="AudioPlayback.None" />を返す。
         /// </returns>
         AudioPlayback Play(SpatialAudioCue cue, Transform followTarget);
 
 
         /// <summary>
-        /// 音を停止する。既に終了している音や無効なハンドルを渡した場合は何もしない。
+        /// 音を停止する。すでに終了している音や無効なハンドルを渡した場合は何もしない。
         /// </summary>
-        /// <param name="playback">停止する音のハンドル</param>
+        /// <param name="playback">停止する音のハンドル。</param>
         /// <param name="fadeOutDuration">フェードアウトにかける秒数。0以下の場合は即座に停止する。</param>
         /// <remarks>
         /// フェードアウトを指定すると、フェードアウトの開始と同時にハンドルが無効になる。
@@ -59,33 +59,33 @@ namespace Narimono
 
 
         /// <summary>
-        /// 音を一時停止する。既に終了している音や無効なハンドルを渡した場合は何もしない。
+        /// 音を一時停止する。すでに終了している音や無効なハンドルを渡した場合は何もしない。
         /// </summary>
-        /// <param name="playback">一時停止する音のハンドル</param>
+        /// <param name="playback">一時停止する音のハンドル。</param>
         void Pause(AudioPlayback playback);
 
 
         /// <summary>
-        /// 音の一時停止を解除する。既に終了している音や無効なハンドルを渡した場合は何もしない。
+        /// 音の一時停止を解除する。すでに終了している音や無効なハンドルを渡した場合は何もしない。
         /// </summary>
-        /// <param name="playback">一時停止を解除する音のハンドル</param>
+        /// <param name="playback">一時停止を解除する音のハンドル。</param>
         void Resume(AudioPlayback playback);
 
 
         /// <summary>
         /// ハンドルが指す音の状態を取得する。
         /// </summary>
-        /// <param name="playback">状態を取得する音のハンドル</param>
+        /// <param name="playback">状態を取得する音のハンドル。</param>
         /// <returns>
-        /// 音の状態を返す。再生が終わった音、フェードアウト中の音、無効なハンドルの場合は<see cref="AudioPlaybackState.Stopped"/>を返す。
+        /// 音の状態を返す。再生が終わった音、フェードアウト中の音、無効なハンドルの場合は<see cref="AudioPlaybackState.Stopped" />を返す。
         /// </returns>
         AudioPlaybackState GetState(AudioPlayback playback);
 
 
         /// <summary>
-        /// 指定カテゴリの音をすべて停止する。
+        /// 指定したカテゴリの音をすべて停止する。
         /// </summary>
-        /// <param name="category">停止する音のカテゴリ</param>
+        /// <param name="category">停止する音のカテゴリ。</param>
         /// <param name="fadeOutDuration">フェードアウトにかける秒数。0以下の場合は即座に停止する。</param>
         /// <remarks>
         /// 即座に停止する場合は、フェードアウト中の音も含めてすべて停止する。
@@ -95,16 +95,16 @@ namespace Narimono
 
 
         /// <summary>
-        /// 指定カテゴリの音を、フェードアウト中の音も含めてすべて一時停止する。
+        /// 指定したカテゴリの音を、フェードアウト中の音も含めてすべて一時停止する。
         /// </summary>
-        /// <param name="category">一時停止する音のカテゴリ</param>
+        /// <param name="category">一時停止する音のカテゴリ。</param>
         void PauseAll(AudioCategory category);
 
 
         /// <summary>
-        /// 指定カテゴリの一時停止中の音をすべて再開する。
+        /// 指定したカテゴリの一時停止中の音をすべて再開する。
         /// </summary>
-        /// <param name="category">再開する音のカテゴリ</param>
+        /// <param name="category">再開する音のカテゴリ。</param>
         void ResumeAll(AudioCategory category);
 
 

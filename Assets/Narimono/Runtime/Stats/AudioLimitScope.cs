@@ -1,14 +1,14 @@
 namespace Narimono
 {
     /// <summary>
-    /// 同時再生数の上限が適用される範囲の列挙型
+    /// 同時再生数の上限が適用される範囲を表す。
     /// </summary>
     internal enum AudioLimitScope
     {
-        /// <summary>Cueごとの上限</summary>
+        /// <summary>Cueごとの上限。</summary>
         Cue,
 
-        /// <summary>カテゴリごとの上限</summary>
+        /// <summary>カテゴリごとの上限。</summary>
         Category,
     }
 }

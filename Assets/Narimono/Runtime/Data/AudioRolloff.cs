@@ -1,7 +1,7 @@
 namespace Narimono
 {
     /// <summary>
-    /// 3Dサウンドの距離による音量の減衰方式の列挙型
+    /// 3Dサウンドの距離による音量の減衰方式を表す。
     /// </summary>
     public enum AudioRolloff
     {
