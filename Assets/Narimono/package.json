@@ -4,7 +4,7 @@
   "author": {
     "name": "Sorane"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "6000.0",
   "description": "Unity向けの、同時再生数の制御・3Dサウンド・フェードに対応したサウンド再生ライブラリ",
   "keywords": [
