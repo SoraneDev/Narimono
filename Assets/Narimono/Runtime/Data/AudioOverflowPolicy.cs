@@ -1,7 +1,7 @@
 namespace Narimono
 {
     /// <summary>
-    /// 同時再生数の上限に達したときの挙動の列挙型
+    /// 同時再生数の上限に達したときの挙動を表す。
     /// </summary>
     public enum AudioOverflowPolicy
     {

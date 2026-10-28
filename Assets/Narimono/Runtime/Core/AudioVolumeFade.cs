@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Narimono
 {
     /// <summary>
-    /// 音量を一定時間かけて目標の値まで変化させる構造体
+    /// 音量を一定時間かけて目標の値まで変化させる。
     /// </summary>
     internal struct AudioVolumeFade
     {
@@ -21,9 +21,9 @@ namespace Narimono
         /// <summary>
         /// 音量の変化を開始する。
         /// </summary>
-        /// <param name="fromVolume">開始時の音量</param>
-        /// <param name="toVolume">目標の音量</param>
-        /// <param name="duration">変化にかける秒数。0より大きい値</param>
+        /// <param name="fromVolume">開始時の音量。</param>
+        /// <param name="toVolume">目標の音量。</param>
+        /// <param name="duration">変化にかける秒数。0より大きい値。</param>
         public void Begin(float fromVolume, float toVolume, float duration)
         {
             _fromVolume = fromVolume;
@@ -37,7 +37,7 @@ namespace Narimono
         /// <summary>
         /// 音量の変化を進める。目標の音量に達すると変化を終える。
         /// </summary>
-        /// <param name="deltaTime">前回からの経過秒数</param>
+        /// <param name="deltaTime">前回からの経過秒数。</param>
         /// <returns>進めた後の音量を返す。</returns>
         public float Advance(float deltaTime)
         {

@@ -5,30 +5,33 @@ using UnityEngine.Audio;
 namespace Narimono
 {
     /// <summary>
-    /// 音源のカテゴリごとの再生設定を持つスクリプタブルオブジェクト
+    /// 音源のカテゴリごとの再生設定を持つ。
     /// </summary>
     [CreateAssetMenu(fileName = "AudioCategory", menuName = "Narimono/Audio Category")]
     public sealed class AudioCategory : ScriptableObject
     {
         [SerializeField] private AudioMixerGroup _audioMixerGroup;
-        [SerializeField, Min(1)] private int _maxPlaybackCount = 1;
-        [SerializeField] private AudioOverflowPolicy _overflowPolicy;
-        [SerializeField, Min(0f), Tooltip("秒")] private float _fadeOutDuration = 0.2f;
+        [SerializeField] [Min(1)] [Tooltip("このカテゴリの同時再生数の上限")]
+        private int _maxPlaybackCount = 1;
+        [SerializeField] [Tooltip("このカテゴリの同時再生数の上限に達したときの挙動")]
+        private AudioOverflowPolicy _overflowPolicy;
+        [SerializeField] [Min(0f)] [Tooltip("音を自動でフェードアウトさせるときにかける秒数")]
+        private float _fadeOutDuration = 0.2f;
 
 
-        /// <summary>オーディオミキサーグループ</summary>
+        /// <summary>オーディオミキサーグループ。</summary>
         public AudioMixerGroup AudioMixerGroup => _audioMixerGroup;
 
 
-        /// <summary>最大同時再生数</summary>
+        /// <summary>このカテゴリの同時再生数の上限。</summary>
         public int MaxPlaybackCount => _maxPlaybackCount;
 
 
-        /// <summary>同時再生数の上限に達したときの挙動</summary>
+        /// <summary>このカテゴリの同時再生数の上限に達したときの挙動。</summary>
         public AudioOverflowPolicy OverflowPolicy => _overflowPolicy;
 
 
-        /// <summary>音をフェードアウトで止めるときにかける秒数</summary>
+        /// <summary>音を自動でフェードアウトさせるときにかける秒数。</summary>
         public float FadeOutDuration => _fadeOutDuration;
     }
 }

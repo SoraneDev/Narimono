@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using UnityEngine;
 
@@ -6,7 +7,8 @@ using UnityEngine;
 namespace Narimono
 {
     /// <summary>
-    /// 再生状況の計測結果。上限の設定を調整するために使う。
+    /// 再生状況の計測結果を保持する。
+    /// 上限の設定を調整するために使う。
     /// </summary>
     /// <remarks>
     /// 計測はEditorとDevelopment Buildでのみ行う。それ以外のビルドでは記録処理の呼び出し自体がコンパイル時に取り除かれる。
@@ -17,13 +19,17 @@ namespace Narimono
         private readonly Dictionary<AudioCueBase, AudioCueStats> _cueStats = new();
 
 
+        /// <summary>
+        /// 計測結果が空の状態で作成する。
+        /// </summary>
+        /// <param name="maxVoiceCount">ボイスの総数。</param>
         internal AudioStats(int maxVoiceCount)
         {
             MaxVoiceCount = maxVoiceCount;
         }
 
 
-        /// <summary>ボイスの総数</summary>
+        /// <summary>ボイスの総数。</summary>
         public int MaxVoiceCount { get; }
 
 
@@ -35,15 +41,15 @@ namespace Narimono
         public int PeakFadingOutVoiceCount { get; private set; }
 
 
-        /// <summary>空きボイスがなく新しい音を捨てた回数。0でない場合はボイスの総数が足りない。</summary>
+        /// <summary>空きボイスがなく、新しい音を捨てた回数。0でない場合はボイスの総数が足りない。</summary>
         public int NoFreeVoiceCount { get; private set; }
 
 
-        /// <summary>カテゴリごとの計測結果</summary>
+        /// <summary>カテゴリごとの計測結果。</summary>
         public IReadOnlyDictionary<AudioCategory, AudioCategoryStats> Categories => _categoryStats;
 
 
-        /// <summary>Cueごとの計測結果</summary>
+        /// <summary>Cueごとの計測結果。</summary>
         public IReadOnlyDictionary<AudioCueBase, AudioCueStats> Cues => _cueStats;
 
 
@@ -70,8 +76,8 @@ namespace Narimono
             var builder = new StringBuilder();
 
             builder.AppendLine("[Narimono Audio Stats]");
-            builder.AppendLine($"Voices: peak {PeakAssignedVoiceCount} / {MaxVoiceCount} " +
-                               $"(fading-out peak {PeakFadingOutVoiceCount}), discarded by no free voice: {NoFreeVoiceCount}");
+            builder.AppendLine($"Voices: peak {PeakAssignedVoiceCount} / {MaxVoiceCount} "
+                + $"(fading-out peak {PeakFadingOutVoiceCount}), discarded by no free voice: {NoFreeVoiceCount}");
 
             builder.AppendLine();
             builder.AppendLine("Categories (peak active / max, discarded by limit, evicted by limit)");
@@ -80,12 +86,13 @@ namespace Narimono
             {
                 AudioCategoryStats stats = pair.Value;
 
-                builder.AppendLine($"  {pair.Key.name}: {stats.PeakActiveCount} / {pair.Key.MaxPlaybackCount}, " +
-                                   $"discarded {stats.DiscardedCount}, evicted {stats.EvictedCount}");
+                builder.AppendLine($"  {pair.Key.name}: {stats.PeakActiveCount} / {pair.Key.MaxPlaybackCount}, "
+                    + $"discarded {stats.DiscardedCount}, evicted {stats.EvictedCount}");
             }
 
             builder.AppendLine();
-            builder.AppendLine("Cues (plays, peak active / max, discarded: interval / range / cue limit / category limit / no voice, evicted)");
+            builder.AppendLine("Cues (plays, peak active / max, "
+                + "discarded: interval / range / cue limit / category limit / no voice, evicted)");
 
             foreach (KeyValuePair<AudioCueBase, AudioCueStats> pair in _cueStats)
             {
@@ -93,10 +100,11 @@ namespace Narimono
                 int maxInstances = pair.Key.MaxInstances;
                 string maxInstancesText = maxInstances == int.MaxValue ? "-" : maxInstances.ToString();
 
-                builder.AppendLine($"  {pair.Key.name}: plays {stats.PlayCount}, peak {stats.PeakActiveCount} / {maxInstancesText}, " +
-                                   $"discarded {stats.MinIntervalDiscardedCount} / {stats.OutOfRangeDiscardedCount} / " +
-                                   $"{stats.CueLimitDiscardedCount} / {stats.CategoryLimitDiscardedCount} / {stats.NoFreeVoiceDiscardedCount}, " +
-                                   $"evicted {stats.EvictedCount}");
+                builder.AppendLine($"  {pair.Key.name}: plays {stats.PlayCount}, "
+                    + $"peak {stats.PeakActiveCount} / {maxInstancesText}, "
+                    + $"discarded {stats.MinIntervalDiscardedCount} / {stats.OutOfRangeDiscardedCount} / "
+                    + $"{stats.CueLimitDiscardedCount} / {stats.CategoryLimitDiscardedCount} / "
+                    + $"{stats.NoFreeVoiceDiscardedCount}, evicted {stats.EvictedCount}");
             }
 
             return builder.ToString();
@@ -109,10 +117,11 @@ namespace Narimono
         /// <summary>
         /// 音を再生したことを記録する。
         /// </summary>
-        /// <param name="cue">再生した音</param>
-        /// <param name="cueActiveCount">再生後のCueの同時再生数</param>
-        /// <param name="categoryActiveCount">再生後のカテゴリの同時再生数</param>
-        [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        /// <param name="cue">再生した音。</param>
+        /// <param name="cueActiveCount">再生後のCueの同時再生数。</param>
+        /// <param name="categoryActiveCount">再生後のカテゴリの同時再生数。</param>
+        [Conditional("UNITY_EDITOR")]
+        [Conditional("DEVELOPMENT_BUILD")]
         internal void RecordPlay(AudioCueBase cue, int cueActiveCount, int categoryActiveCount)
         {
             AudioCueStats cueStats = GetCueStats(cue);
@@ -127,20 +136,20 @@ namespace Narimono
         /// <summary>
         /// 新しい音を再生しなかったことを記録する。
         /// </summary>
-        /// <param name="cue">再生しなかった音</param>
-        /// <param name="reason">再生しなかった理由</param>
-        [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        /// <param name="cue">再生しなかった音。</param>
+        /// <param name="reason">再生しなかった理由。</param>
+        [Conditional("UNITY_EDITOR")]
+        [Conditional("DEVELOPMENT_BUILD")]
         internal void RecordDiscard(AudioCueBase cue, AudioDiscardReason reason)
         {
             GetCueStats(cue).RecordDiscard(reason);
 
-            // それ以外の理由はCueごとの回数だけを数える。
+            // カテゴリの上限はカテゴリごとの回数、空きボイスの不足は全体の回数にも数える。
             switch (reason)
             {
                 case AudioDiscardReason.CategoryLimit:
                     GetCategoryStats(cue.Category).DiscardedCount++;
                     break;
-
                 case AudioDiscardReason.NoFreeVoice:
                     NoFreeVoiceCount++;
                     break;
@@ -151,9 +160,10 @@ namespace Narimono
         /// <summary>
         /// 上限に達して古い音を止めた、またはフェードアウトさせたことを記録する。
         /// </summary>
-        /// <param name="cue">新しく再生しようとした音</param>
-        /// <param name="scope">どの範囲の上限に達していたか</param>
-        [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        /// <param name="cue">新しく再生しようとした音。</param>
+        /// <param name="scope">どの範囲の上限に達していたか。</param>
+        [Conditional("UNITY_EDITOR")]
+        [Conditional("DEVELOPMENT_BUILD")]
         internal void RecordEviction(AudioCueBase cue, AudioLimitScope scope)
         {
             switch (scope)
@@ -161,7 +171,6 @@ namespace Narimono
                 case AudioLimitScope.Cue:
                     GetCueStats(cue).EvictedCount++;
                     break;
-
                 case AudioLimitScope.Category:
                     GetCategoryStats(cue.Category).EvictedCount++;
                     break;
@@ -173,8 +182,9 @@ namespace Narimono
         /// ボイスの使用状況を記録する。
         /// </summary>
         /// <param name="assignedCount">使用中のボイス数。フェードアウト中のボイスも含む。</param>
-        /// <param name="fadingOutCount">フェードアウト中のボイス数</param>
-        [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        /// <param name="fadingOutCount">フェードアウト中のボイス数。</param>
+        [Conditional("UNITY_EDITOR")]
+        [Conditional("DEVELOPMENT_BUILD")]
         internal void RecordVoiceUsage(int assignedCount, int fadingOutCount)
         {
             PeakAssignedVoiceCount = Mathf.Max(PeakAssignedVoiceCount, assignedCount);
@@ -182,9 +192,7 @@ namespace Narimono
         }
 
 
-        /// <summary>
-        /// Cueの計測結果を取得する。まだない場合は作成する。
-        /// </summary>
+        // まだない場合は作成する。
         private AudioCueStats GetCueStats(AudioCueBase cue)
         {
             if (!_cueStats.TryGetValue(cue, out AudioCueStats stats))
@@ -197,9 +205,7 @@ namespace Narimono
         }
 
 
-        /// <summary>
-        /// カテゴリの計測結果を取得する。まだない場合は作成する。
-        /// </summary>
+        // まだない場合は作成する。
         private AudioCategoryStats GetCategoryStats(AudioCategory category)
         {
             if (!_categoryStats.TryGetValue(category, out AudioCategoryStats stats))

@@ -1,7 +1,7 @@
 namespace Narimono
 {
     /// <summary>
-    /// 新しい音を再生しなかった理由の列挙型
+    /// 新しい音を再生しなかった理由を表す。
     /// </summary>
     internal enum AudioDiscardReason
     {
