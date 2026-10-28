@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Narimono
 {
     /// <summary>
-    /// AudioSourceと再生状態をまとめた、同時再生の1枠を表す。
+    /// <see cref="AudioSource" />と再生状態をまとめた、同時再生の1枠を表す。
     /// </summary>
     internal sealed class AudioVoice
     {
@@ -17,10 +17,10 @@ namespace Narimono
 
 
         /// <summary>
-        /// 再生に使うAudioSourceを受け取り、空き状態のボイスを作成する。
+        /// 再生に使う<see cref="AudioSource" />を受け取り、空き状態のボイスを作成する。
         /// </summary>
         /// <param name="index">ボイスの番号。</param>
-        /// <param name="audioSource">再生に使うAudioSource。</param>
+        /// <param name="audioSource">再生に使う<see cref="AudioSource" />。</param>
         public AudioVoice(int index, AudioSource audioSource)
         {
             Index = index;
@@ -74,7 +74,7 @@ namespace Narimono
 
 
         /// <summary>再生が自然に終了したかどうか。</summary>
-        /// <remarks>AudioSource.isPlayingは一時停止中もfalseになるため、一時停止中は終了とみなさない。</remarks>
+        /// <remarks><see cref="AudioSource.isPlaying" />は一時停止中もfalseになるため、一時停止中は終了とみなさない。</remarks>
         public bool IsFinished => IsAssigned && !IsPaused && !_audioSource.isPlaying;
 
 
@@ -101,7 +101,7 @@ namespace Narimono
         /// <param name="cue">再生する音源。</param>
         /// <param name="startOrder">再生開始の順番。</param>
         /// <param name="position">音を鳴らすワールド座標。</param>
-        /// <param name="followTarget">追従させるTransform。追従させない場合はnull。</param>
+        /// <param name="followTarget">追従させる<see cref="Transform" />。追従させない場合はnull。</param>
         /// <remarks>空きボイスに対して呼ぶこと。前回の再生の状態は<see cref="Release" />で初期化済みであることを前提とする。</remarks>
         public void Play(SpatialAudioCue cue, long startOrder, Vector3 position, Transform followTarget)
         {
@@ -260,7 +260,7 @@ namespace Narimono
 
 
         /// <summary>
-        /// ボイスを空き状態に戻す。AudioSourceの再生自体は止めない。
+        /// ボイスを空き状態に戻す。<see cref="AudioSource" />の再生自体は止めない。
         /// </summary>
         public void Release()
         {

@@ -10,7 +10,7 @@ namespace Narimono
     /// 音の再生・停止などを管理する。
     /// </summary>
     /// <remarks>
-    /// ほかのコンポーネントのAwakeからPlayが呼ばれてもボイスが生成済みであるように、<see cref="DefaultExecutionOrder" />で先に初期化する。
+    /// ほかのコンポーネントのAwakeから再生してもボイスが生成済みであるように、<see cref="DefaultExecutionOrder" />で先に初期化する。
     /// </remarks>
     [DefaultExecutionOrder(-100)]
     [AddComponentMenu("Narimono/AudioSystem")]
@@ -556,8 +556,12 @@ namespace Narimono
 
 
         // 空きを作れた場合はtrue、新しい音を捨てる場合はfalseを返す。
-        private bool TryApplyOverflowPolicy(AudioCueBase cue, AudioLimitScope scope, AudioOverflowPolicy policy,
-            float fadeOutDuration, AudioVoice oldestVoice)
+        private bool TryApplyOverflowPolicy(
+            AudioCueBase cue,
+            AudioLimitScope scope,
+            AudioOverflowPolicy policy,
+            float fadeOutDuration,
+            AudioVoice oldestVoice)
         {
             switch (policy)
             {

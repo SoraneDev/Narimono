@@ -33,10 +33,10 @@ namespace Narimono
 
 
         /// <summary>
-        /// 指定したTransformに追従させて3D音源を再生する。追従対象が破棄されると、音はフェードアウトして終了する。
+        /// 指定した<see cref="Transform" />に追従させて3D音源を再生する。追従対象が破棄されると、音はフェードアウトして終了する。
         /// </summary>
         /// <param name="cue">再生する音源。</param>
-        /// <param name="followTarget">音を追従させるTransform。</param>
+        /// <param name="followTarget">音を追従させる<see cref="Transform" />。</param>
         /// <returns>
         /// 停止・一時停止に使うハンドル。
         /// リスナーから聞こえない距離にある場合や、再生間隔の制限、同時再生数の上限などで再生しなかった場合は
@@ -52,7 +52,7 @@ namespace Narimono
         /// <param name="fadeOutDuration">フェードアウトにかける秒数。0以下の場合は即座に停止する。</param>
         /// <remarks>
         /// フェードアウトを指定すると、フェードアウトの開始と同時にハンドルが無効になる。
-        /// そのため、フェードアウト中の音にStop・Pause・Resumeを呼んでも何もしない。
+        /// そのため、フェードアウト中の音に<see cref="Stop" />・<see cref="Pause" />・<see cref="Resume" />を呼んでも何もしない。
         /// 一時停止中の音は、秒数を指定しても即座に停止する。
         /// </remarks>
         void Stop(AudioPlayback playback, float fadeOutDuration = 0f);
@@ -109,9 +109,9 @@ namespace Narimono
 
 
         /// <summary>
-        /// 3Dサウンドの距離判定に使うリスナーを設定する。未設定の場合はシーン内のAudioListenerを自動で探す。
+        /// 3Dサウンドの距離判定に使うリスナーを設定する。未設定の場合はシーン内の<see cref="AudioListener" />を自動で探す。
         /// </summary>
-        /// <param name="listener">AudioListenerのTransform。nullを渡すと自動で探す状態に戻る。</param>
+        /// <param name="listener"><see cref="AudioListener" />の<see cref="Transform" />。nullを渡すと自動で探す状態に戻る。</param>
         void SetListener(Transform listener);
     }
 }

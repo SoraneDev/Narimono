@@ -30,13 +30,13 @@ namespace Narimono
         /// <summary>
         /// 派生クラスを作れる範囲を、このアセンブリの中に限定する。
         /// </summary>
-        /// <remarks>Cueの種類は2DのAudioCueと3DのSpatialAudioCueだけにするため、internalにする。</remarks>
+        /// <remarks>Cueの種類は2Dの<see cref="AudioCue" />と3Dの<see cref="SpatialAudioCue" />だけにするため、internalにする。</remarks>
         internal AudioCueBase()
         {
         }
 
 
-        /// <summary>音源（AudioClipまたはAudioRandomContainer）。</summary>
+        /// <summary>音源（<see cref="AudioClip" />または<see cref="AudioRandomContainer" />）。</summary>
         public AudioResource AudioResource => _audioResource;
 
 
@@ -64,7 +64,7 @@ namespace Narimono
         public float MinInterval => _minInterval;
 
 
-        /// <summary>このCueの同時再生数の上限。上限を設けない場合はint.MaxValue。</summary>
+        /// <summary>このCueの同時再生数の上限。上限を設けない場合は<see cref="int.MaxValue" />。</summary>
         public int MaxInstances => _limitInstances ? _maxInstances : int.MaxValue;
 
 
